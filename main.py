@@ -1,5 +1,6 @@
 """AI dating bio exporter with paired-gate check, build 4."""
 import json
+import os
 import pathlib
 
 BIO_CAP = 180
@@ -7,7 +8,7 @@ CODE_NAME = "bio4-agent-bio-r4"
 
 
 def pull():
-    return pathlib.Path("entry.txt").read_text(encoding="utf-8").strip()
+    return (pathlib.Path(__file__).resolve().parent / "entry.txt").read_text(encoding="utf-8").strip()
 
 
 def judge(n):
@@ -15,8 +16,8 @@ def judge(n):
 
 
 def push(body):
-    out = pathlib.Path("out")
-    out.mkdir(exist_ok=True)
+    out = pathlib.Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or "out")
+    out.mkdir(parents=True, exist_ok=True)
     (out / "entry.txt").write_text(body + "\n", encoding="utf-8", newline="\n")
 
 
